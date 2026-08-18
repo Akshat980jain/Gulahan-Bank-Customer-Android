@@ -1,0 +1,6 @@
+{
+  "name": "Gulshan EBank",
+  "description": "A next-generation mobile banking app designed to provide retail customers with a seamless digital banking experience.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

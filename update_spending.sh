@@ -1,0 +1,1 @@
+awk '/fun SpendingAnalyticsSection\(\) \{/ { print; system("cat spending_impl.kt"); flag=1; next } /^@Composable/ && flag { flag=0 } !flag { print }' app/src/main/java/com/example/ui/screens/HomeScreen.kt > temp.kt && mv temp.kt app/src/main/java/com/example/ui/screens/HomeScreen.kt
