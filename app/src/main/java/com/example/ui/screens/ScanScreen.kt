@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -71,7 +71,15 @@ fun ScanScreen(currentScreen: String, onNavigate: (String) -> Unit) {
                     contentAlignment = Alignment.Center
                 ) {
                     if (cameraPermissionState.status.isGranted) {
-                        CameraPreview()
+                        
+                        var hasNavigated by remember { mutableStateOf(false) }
+                        CameraPreview(onQrScanned = { qrCode -> 
+                            if (!hasNavigated) {
+                                hasNavigated = true
+                                onNavigate("transaction_success")
+                            }
+                        })
+
                     } else {
                         Icon(
                             Icons.Outlined.QrCodeScanner,
@@ -111,8 +119,9 @@ fun ScanScreen(currentScreen: String, onNavigate: (String) -> Unit) {
     }
 }
 
+@androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
 @Composable
-fun CameraPreview() {
+fun CameraPreview(onQrScanned: (String) -> Unit) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     
@@ -127,6 +136,37 @@ fun CameraPreview() {
                     it.surfaceProvider = previewView.surfaceProvider
                 }
                 
+                val imageAnalysis = androidx.camera.core.ImageAnalysis.Builder()
+                    .setBackpressureStrategy(androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                    .build()
+                
+                val scanner = com.google.mlkit.vision.barcode.BarcodeScanning.getClient(
+                    com.google.mlkit.vision.barcode.BarcodeScannerOptions.Builder()
+                        .setBarcodeFormats(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE)
+                        .build()
+                )
+                
+                imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(ctx)) { imageProxy ->
+                    val mediaImage = imageProxy.image
+                    if (mediaImage != null) {
+                        val image = com.google.mlkit.vision.common.InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                        scanner.process(image)
+                            .addOnSuccessListener { barcodes ->
+                                if (barcodes.isNotEmpty()) {
+                                    val rawValue = barcodes.first().rawValue
+                                    if (rawValue != null) {
+                                        onQrScanned(rawValue)
+                                    }
+                                }
+                            }
+                            .addOnCompleteListener {
+                                imageProxy.close()
+                            }
+                    } else {
+                        imageProxy.close()
+                    }
+                }
+
                 val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
                 
                 try {
@@ -134,7 +174,8 @@ fun CameraPreview() {
                     cameraProvider.bindToLifecycle(
                         lifecycleOwner,
                         cameraSelector,
-                        preview
+                        preview,
+                        imageAnalysis
                     )
                 } catch (exc: Exception) {
                     // Handle exceptions

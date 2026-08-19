@@ -38,12 +38,16 @@ class MainActivity : FragmentActivity() {
                     Surface(modifier = Modifier.fillMaxSize()) {
                         NavHost(navController = navController, startDestination = "home") {
                             val bottomNavAction: (String) -> Unit = { route ->
-                                navController.navigate(route) {
-                                    popUpTo(navController.graph.startDestinationId) {
-                                        saveState = true
+                                if (route in listOf("home", "payments", "scan", "cards", "more")) {
+                                    navController.navigate(route) {
+                                        popUpTo(navController.graph.startDestinationId) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
+                                } else {
+                                    navController.navigate(route)
                                 }
                             }
                             
@@ -76,6 +80,7 @@ class MainActivity : FragmentActivity() {
 
                             // Nested screens
                             composable("transaction_success") { TransactionSuccessScreen(onNavigateHome = { navController.navigate("home") { popUpTo("home") { inclusive = true } } }) }
+                            composable("bank_transfer") { BankTransferScreen(onNavigateBack = { navController.popBackStack() }, onNavigateSuccess = { navController.navigate("transaction_success") }) }
                             composable("add_money") { AddMoneyScreen(onNavigateBack = { navController.popBackStack() }, onNavigateSuccess = { navController.navigate("transaction_success") }) }
                             composable("ai_advisor") { AiAdvisorScreen(onNavigateBack = { navController.popBackStack() }) }
                             composable("notifications") { NotificationsScreen(onNavigateBack = { navController.popBackStack() }) }

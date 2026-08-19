@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.automirrored.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -88,20 +89,20 @@ fun MoreScreen(currentScreen: String, onNavigate: (String) -> Unit) {
             item { SettingsMenuItem(Icons.Outlined.DarkMode, "Dark Mode") { onNavigate("dark_mode") } }
             
             item { Text("Support", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp)) }
-            item { SettingsMenuItem(Icons.Outlined.HelpOutline, "Help & Support") { onNavigate("help_support") } }
-            item { SettingsMenuItem(Icons.Outlined.Article, "Terms of Service") { onNavigate("terms_service") } }
+            item { SettingsMenuItem(Icons.AutoMirrored.Outlined.HelpOutline, "Help & Support") { onNavigate("help_support") } }
+            item { SettingsMenuItem(Icons.AutoMirrored.Outlined.Article, "Terms of Service") { onNavigate("terms_service") } }
             
             item { Spacer(modifier = Modifier.height(16.dp)) }
             item { HorizontalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)) }
             
-            item { SettingsMenuItem(Icons.Outlined.Logout, "Logout", tint = MaterialTheme.colorScheme.error) { showLogoutDialog = true } }
+            item { SettingsMenuItem(Icons.AutoMirrored.Outlined.Logout, "Logout", tint = MaterialTheme.colorScheme.error) { showLogoutDialog = true } }
             item { Spacer(modifier = Modifier.height(32.dp)) }
         }
 
         if (showLogoutDialog) {
             AlertDialog(
                 onDismissRequest = { showLogoutDialog = false },
-                icon = { Icon(Icons.Outlined.Logout, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
+                icon = { Icon(Icons.AutoMirrored.Outlined.Logout, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
                 title = { Text("Sign Out", fontWeight = FontWeight.Bold) },
                 text = { Text("Are you sure you want to securely sign out of your workstation? You will need to re-enter your credentials to access your account.") },
                 confirmButton = {

@@ -9,12 +9,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+
 import com.airbnb.lottie.compose.*
 import com.example.ui.theme.*
 
 @Composable
 fun TransactionSuccessScreen(onNavigateHome: () -> Unit) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(com.example.R.raw.success_anim))
+    
+    val haptic = LocalHapticFeedback.current
+    LaunchedEffect(Unit) {
+        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+    }
+    
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = 1
@@ -51,7 +60,10 @@ fun TransactionSuccessScreen(onNavigateHome: () -> Unit) {
         Spacer(modifier = Modifier.height(48.dp))
         
         Button(
-            onClick = onNavigateHome,
+            onClick = {
+                haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                onNavigateHome()
+            },
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier.fillMaxWidth(0.8f).height(50.dp)

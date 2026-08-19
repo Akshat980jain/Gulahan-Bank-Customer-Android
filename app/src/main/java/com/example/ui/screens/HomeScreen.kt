@@ -9,7 +9,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.automirrored.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -254,7 +256,7 @@ fun FinancialOverviewSection() {
         Spacer(modifier = Modifier.height(12.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             OverviewCard(Modifier.weight(1f), "Savings", 16550.0, "+12.5%", true, Icons.Outlined.Savings)
-            OverviewCard(Modifier.weight(1f), "Investments", 100000.0, "+5.8%", true, Icons.Outlined.TrendingUp)
+            OverviewCard(Modifier.weight(1f), "Investments", 100000.0, "+5.8%", true, Icons.AutoMirrored.Outlined.TrendingUp)
         }
     }
 }
@@ -295,7 +297,7 @@ fun QuickActionsGrid(onScanPay: () -> Unit, onCards: () -> Unit, onTransfer: () 
         Spacer(modifier = Modifier.height(24.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             QuickActionButton(Icons.Outlined.QrCodeScanner, "Scan & Pay", onScanPay)
-            QuickActionButton(Icons.Outlined.Send, "Transfer", onTransfer)
+            QuickActionButton(Icons.AutoMirrored.Outlined.Send, "Transfer", onTransfer)
             QuickActionButton(Icons.Outlined.AccountBalanceWallet, "Add Money", onAddMoney)
             QuickActionButton(Icons.Outlined.CreditCard, "Cards", onCards)
         }

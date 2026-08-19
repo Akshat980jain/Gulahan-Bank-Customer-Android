@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.automirrored.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -54,7 +55,7 @@ fun TransfersScreen(currentScreen: String, onNavigate: (String) -> Unit) {
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TransferMethodButton(Icons.Outlined.AccountBalance, "To Bank\nAccount") { onNavigate("transaction_success") }
+                    TransferMethodButton(Icons.Outlined.AccountBalance, "To Bank\nAccount") { onNavigate("bank_transfer") }
                     TransferMethodButton(Icons.Outlined.AlternateEmail, "To UPI\nID") { onNavigate("transaction_success") }
                     TransferMethodButton(Icons.Outlined.Contacts, "To\nContact") { onNavigate("transaction_success") }
                     TransferMethodButton(Icons.Outlined.SyncAlt, "Self\nTransfer") { onNavigate("transaction_success") }
